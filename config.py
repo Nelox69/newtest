@@ -1,0 +1,8 @@
+DB_USER = "renanv"
+DB_PASS = "renanv5012"
+DB_NAME = "newtestik_db"
+DB_URL = f"postgres://{DB_USER}:{DB_PASS}@127.0.0.1/{DB_NAME}"
+
+BOT_TOKEN = "7083006652:AAEXVjs8u2YZUb7ge1pNbta7NnWz-Zea0N4"
+
+ADMINS = (163482293, 273149212, 631312205, 1955435218)

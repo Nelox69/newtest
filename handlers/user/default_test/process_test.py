@@ -56,6 +56,9 @@ async def take_answer(call: types.CallbackQuery, state: FSMContext, bot: Bot):
             right_or_not = '👍 Правильно'
         else:
             right_or_not = f'😢 Неправильно, правильный ответ - {texts.DEFAULT_ANS[test_type][int(question_index)][int(ans)]}'
+        
+        await call.message.delete()
+
         await call.message.answer_photo(
             photo=types.FSInputFile(f'utils/images/{test_type}/{int(question_index)+1}.jpg'),
             caption=texts.DEFTEST_MESSAGE_PASSING.format(

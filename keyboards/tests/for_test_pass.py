@@ -6,7 +6,7 @@ def group_result_menu(test_id: int, bot_username: str):
 
     builder.button(
         text='💥 Пройти',
-        switch_inline_query_current_chat=f'{test_id}'
+        callback_data=f'test_{test_id}'
     )
     builder.button(
         text='🧩 Создать тест',

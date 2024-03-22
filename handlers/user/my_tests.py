@@ -9,7 +9,7 @@ from states.user import EditTestSG, ConfirmTestDeleteSG
 from utils import texts
 from utils.admin import show_ad_pm, check_follow, show_advert
 from utils.telegram import ad_in_text, upload_photo_to_telegraph, text_len_correct
-from keyboards.user_menu import MY_TESTS_TEXT, user_menu
+from keyboards.user_menu import MINI_TESTS, user_menu
 from keyboards.mandatory_subscription import unsubbed
 from keyboards.tests.for_test_edit import (
     EditTestCF,
@@ -42,28 +42,28 @@ async def return_menu(call: types.CallbackQuery):
     await call.message.answer('💼 <b>Меню бота:</b>', reply_markup=user_menu())
 
 
-@router.callback_query(F.data == 'minitests')
-async def handle_command(call: types.CallbackQuery, bot: Bot):
-    user = await crud.get_user(call.from_user.id)
+@router.message(F.text == MINI_TESTS)
+async def handle_command(message: types.Message, bot: Bot):
+    user = await crud.get_user(message.from_user.id)
     follows = await check_follow(user, bot)
 
     if follows and "subs" in follows:
-        return await call.message.answer(
+        return await message.answer(
             texts.SUB_TEXT,
             reply_markup=unsubbed(follows)
         )
 
-    tests = await crud.get_user_tests(call.from_user.id)
+    tests = await crud.get_user_tests(message.from_user.id)
 
     if len(tests) == 0:
-        return await call.message.answer(texts.NO_MY_TESTS_DESC)
+        return await message.answer(texts.NO_MY_TESTS_DESC)
 
-    await call.message.answer(
+    await message.answer(
         texts.MY_TESTS_DESC.format(tests_created=len(tests)),
         reply_markup=my_tests_menu(tests)
     )
 
-    await show_advert(call.from_user.id)
+    await show_advert(message.from_user.id)
 
 
 @router.callback_query(F.data == 'tests_list')

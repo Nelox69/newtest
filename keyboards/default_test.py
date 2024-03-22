@@ -1,14 +1,20 @@
 from aiogram.utils.keyboard import InlineKeyboardBuilder, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardBuilder
-from utils.texts import DEFAULT_TESTS_NAMES
+from utils.texts import DEFAULT_TESTS_NAMES, QUIZ_TEST_NAMES
 
 def default_test_menu(user_id: int, tests) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     for i in tests:
         builder.button(text=DEFAULT_TESTS_NAMES[i.test_type], callback_data=f'show_{i.test_type}_{user_id}')
     builder.button(text='Шаблоны тестов', callback_data=f'patterns')
-
-    builder.button(text='Мини тесты', callback_data=f'minitests')
-    
+    for test in QUIZ_TEST_NAMES.keys():
+        builder.button(
+        text=QUIZ_TEST_NAMES[test],
+        callback_data=f'deftest_{test}'
+    )
+    builder.button(
+        text='Квиз: Гарри Потер',
+        callback_data='harrypotter_test'
+    )
     builder.adjust(1)
 
     return builder.as_markup(resize_keyboard=True)
@@ -62,6 +68,14 @@ def confirm_passing(
 
     return builder.as_markup(resize_keyboard=True)
 
+def confirm_harry_test():
+    builder = InlineKeyboardBuilder()
+    builder.button(
+        text='Начать',
+        callback_data=f'startharrytest'
+    )
+
+    return builder.as_markup(resize_keyboard=True)
     
 def showing_test(
         user_id,
@@ -80,3 +94,4 @@ def showing_test(
     builder.adjust(1)
 
     return builder.as_markup(resize_keyboard=True)
+

@@ -1,11 +1,13 @@
 from aiogram.utils.keyboard import InlineKeyboardBuilder, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardBuilder
-
+from aiogram.types import KeyboardButton
 
 CREATE_TEST_TEXT = '🧩 Создать тест'
 MY_TESTS_TEXT = '🌟 Мои тесты'
 TOP_TEXT = '🔝 Топ тестов'
 CATALOGUE_TEXT = 'Каталог'
 RANDOM_TEST_TEXT = '🎲 Случайный тест'
+FRIEND_TEST = "👥Тесты дружбы"
+MINI_TESTS = '📋Мини тесты'
 
 def user_menu() -> ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
@@ -13,17 +15,26 @@ def user_menu() -> ReplyKeyboardMarkup:
     builder.button(
         text=CREATE_TEST_TEXT
     )
-    builder.button(
-        text=MY_TESTS_TEXT
+    builder.row(
+        KeyboardButton(
+            text=TOP_TEXT
+        ),
+        KeyboardButton(
+            text=RANDOM_TEST_TEXT
+        )
     )
     
-    builder.button(
-        text=TOP_TEXT
+    builder.row(
+        KeyboardButton(
+            text=FRIEND_TEST
+        ),
+        KeyboardButton(
+            text=MINI_TESTS
+        )
     )
-    builder.button(
-        text=RANDOM_TEST_TEXT
-    )
-    builder.adjust(2)
+
+
+    
 
     return builder.as_markup(resize_keyboard=True)
 

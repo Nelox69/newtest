@@ -5,26 +5,27 @@ from aiogram.filters import Command
 from database import crud
 
 from keyboards import default_test
-from keyboards.user_menu import MY_TESTS_TEXT
+from keyboards.user_menu import FRIEND_TEST
 
 from utils import texts
 
 router = Router()
 
-@router.message(Command('mytests'))
-@router.message(F.text == MY_TESTS_TEXT)
-async def anonim_test(message: types.Message):
-    user_id=message.from_user.id
+
+@router.message(F.text == FRIEND_TEST)
+async def patterns_menu(message: types.Message):
+    tests = await crud.get_default_test_quantity(user_id=message.from_user.id)
     await message.answer(
-        texts.DEFAULT_TEST_MENU
-    )
-    count = await crud.get_default_test_quantity(
-        user_id=user_id
+        text=texts.DEFAULT_TEST_MENU
     )
     await message.answer(
-        text=f'Список твоих тестов ({len(count)})',
-        reply_markup=default_test.default_test_menu(user_id=user_id,tests=count)
+        text=f'Список твоих тестов ({len(tests)}):',
+        reply_markup=default_test.default_test_menu(
+            user_id=message.from_user.id,
+            tests=tests
+        )
     )
+
 
 @router.callback_query(F.data == 'patterns')
 @router.callback_query(F.data == 'back_to_patterns')
